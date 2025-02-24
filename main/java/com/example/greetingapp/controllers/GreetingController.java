@@ -1,29 +1,23 @@
 package com.example.greetingapp.controllers;
 
-import org.springframework.web.bind.annotation.*;
-import java.util.Map;
+import com.example.greetingapp.services.GreetingService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/greeting")
 public class GreetingController {
 
+    private final GreetingService greetingService;
+
+    // Constructor Injection for GreetingService
+    public GreetingController(GreetingService greetingService) {
+        this.greetingService = greetingService;
+    }
+
     @GetMapping
     public String getGreeting() {
-        return "{ \"message\": \"Hello World\" }";
-    }
-
-    @PostMapping
-    public String createGreeting(@RequestBody Map<String, String> payload) {
-        return "{ \"message\": \"Greeting Created: " + payload.get("message") + "\" }";
-    }
-
-    @PutMapping
-    public String updateGreeting(@RequestBody Map<String, String> payload) {
-        return "{ \"message\": \"Greeting Updated: " + payload.get("message") + "\" }";
-    }
-
-    @DeleteMapping
-    public String deleteGreeting() {
-        return "{ \"message\": \"Greeting Deleted\" }";
+        return greetingService.getGreetingMessage();
     }
 }
